@@ -1,0 +1,49 @@
+﻿@model Account
+@{
+    ViewData["Title"] = "Account Details";
+}
+
+<h2>Account Details</h2>
+
+<div>
+    <p>Account ID: @Model.Id</p>
+    <p>Currency: @Model.Currency</p>
+    <p>Client: @Model.Client.FullName</p>
+    <p>Total Amount across Cards: @ViewBag.TotalFortune</p>
+</div>
+
+<h3>Connected Cards</h3>
+
+@if (Model.Cards.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Card Number</th>
+                <th>Expiration Date</th>
+                <th>Fortune</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var card in Model.Cards)
+            {
+                <tr>
+                    <td>@card.CardNumber.ToString("####\t####\t####\t####")</td>
+                    <td>@card.ExpirationDate.ToString("MM/yy")</td>
+                    <td>@card.Fortune</td>
+                    <td>
+                        <a asp-controller="Card" asp-action="Details" asp-route-id="@card.Id" class="btn btn-info btn-sm">Details</a>
+                        <a asp-controller="Card" asp-action="Delete" asp-route-id="@card.Id" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No cards connected to this account.</p>
+}
+
+<a asp-controller="Card" asp-action="Create" asp-route-accountId="@Model.Id" class="btn btn-info btn-sm">Create card</a>

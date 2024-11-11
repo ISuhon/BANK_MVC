@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Create Account";
+}
+
+<h2>Create Account</h2>
+
+<div>
+    <p>Logged in as: @ViewBag.ClientFullName</p>
+</div>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="currency">Select Currency:</label>
+        <select class="form-control" name="currency">
+            @foreach (var currency in Enum.GetValues(typeof(Currency)))
+            {
+                <option value="@currency">@currency.ToString()</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Account</button>
+</form>

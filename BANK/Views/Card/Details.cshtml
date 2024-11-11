@@ -1,0 +1,52 @@
+﻿@model BANK.Data.Entities.Card
+
+@{
+    ViewData["Title"] = "Card Details";
+}
+
+<h2>Card Details</h2>
+
+<div>
+    <p><strong>Card Number:</strong> @Model.CardNumber</p>
+    <p><strong>Expiration Date:</strong> @Model.ExpirationDate.ToString("MM/yy")</p>
+    <p><strong>CVV Code:</strong> @Model.CVVcode</p>
+    <p><strong>PIN:</strong> @Model.PIN</p>
+    <p><strong>Balance:</strong> @Model.Fortune</p>
+    <p><strong>Account ID:</strong> @Model.AccountId</p>
+</div>
+
+<h3>Transactions</h3>
+
+@if (Model.Transactions != null && Model.Transactions.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Transaction ID</th>
+                <th>Payee</th>
+                <th>Receiver</th>
+                <th>Date</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var transaction in Model.Transactions)
+            {
+                <tr>
+                    <td>@transaction.Id</td>
+                    <td>@transaction.PayeeId</td>
+                    <td>@transaction.Receiver</td>
+                    <td>@transaction.Date.ToString("yyyy-MM-dd")</td>
+                    <td>@transaction.Amount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No transactions found for this card.</p>
+}
+
+<a asp-controller="Account" asp-action="Details" asp-route-id="@Model.AccountId" class="btn btn-primary">Back to Account</a>
+<a asp-controller="Transaction" asp-action="Create" asp-route-cardId="@Model.Id" class="btn btn-info btn-sm">Transactions</a>

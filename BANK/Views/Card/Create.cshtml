@@ -1,0 +1,39 @@
+﻿@model BANK.Data.Entities.Card
+
+@{
+    ViewData["Title"] = "Create Card";
+    string cardNumberString = "";
+    Random _random = new Random();
+
+    for (int i = 0; i < 4; i++)
+    {
+        cardNumberString += _random.Next(1000, 10000);
+    }
+
+    long cardNumber = long.Parse(cardNumberString);
+
+    short cvv = (short)_random.Next(100, 1000);
+}
+
+<h2>Create Card</h2>
+
+<form asp-action="Create" method="post">
+    <input type="hidden" asp-for="AccountId" value="@ViewBag.Account" />
+    <input type="hidden" asp-for="CardNumber" value="@cardNumber" />
+    <input type="hidden" asp-for="ExpirationDate" value="@DateTime.Now.AddYears(6)" />
+    <input type="hidden" asp-for="CVVcode" value="@cvv" />
+
+    <div class="form-group">
+        <label asp-for="PIN"></label>
+        <input asp-for="PIN" type="number" class="form-control" />
+        <span asp-validation-for="PIN" class="text-danger"></span>
+    </div>
+   
+    <button type="submit" class="btn btn-primary">Create Card</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
