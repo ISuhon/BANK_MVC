@@ -41,7 +41,7 @@ namespace BANK.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, int page = 1, int pageSize = 10, string search = "", string sortBy = "ExpirationDate", bool sortDescending = false)
         {
             var account = await _context.Accounts
                 .Include(a => a.Cards)
@@ -50,9 +50,39 @@ namespace BANK.Controllers
 
             if (account == null) return NotFound();
 
-            var totalFortune = account.Cards.Sum(c => c.Fortune);
+            var filteredCards = account.Cards.AsQueryable();
+            if (!string.IsNullOrEmpty(search))
+            {
+                filteredCards = filteredCards.Where(c =>
+                    c.Fortune.ToString().Contains(search) ||
+                    c.ExpirationDate.ToString("MM/yy").Contains(search));
+            }
 
+            filteredCards = sortBy switch
+            {
+                "ExpirationDate" => sortDescending
+                    ? filteredCards.OrderByDescending(c => c.ExpirationDate)
+                    : filteredCards.OrderBy(c => c.ExpirationDate),
+                "Fortune" => sortDescending
+                    ? filteredCards.OrderByDescending(c => c.Fortune)
+                    : filteredCards.OrderBy(c => c.Fortune),
+                _ => filteredCards
+            };
+
+            var totalCards = filteredCards.Count();
+            filteredCards = filteredCards.Skip((page - 1)* pageSize).Take(pageSize);
+
+            account.Cards = filteredCards.ToList();
+
+            var totalFortune = account.Cards.Sum(c => c.Fortune);
             ViewBag.TotalFortune = totalFortune;
+            ViewBag.Search = search;
+            ViewBag.SortBy = sortBy;
+            ViewBag.SortDescending = sortDescending;
+            ViewBag.CurrentPage = page; 
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalCards / pageSize);
+
             return View(account);
         }
 
