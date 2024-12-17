@@ -14,7 +14,7 @@
         public Currency Currency { get; set; }
 
         public int ClientId { get; set; }
-        public Client Client { get; set; }
+        public ApplicationUser Client { get; set; }
 
         public ICollection<Card> Cards { get; set;}
     }

@@ -1,16 +1,17 @@
 ﻿using BANK.Data.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BANK.Data
 {
-    public class BankDbContext : DbContext
+    public class BankDbContext : IdentityDbContext<ApplicationUser>
     {
         public BankDbContext(DbContextOptions<BankDbContext> options) : base(options)
         {
             Database.EnsureCreated();
         }
 
-        public DbSet<Client> Clients { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Card> Cards { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
@@ -28,6 +29,23 @@ namespace BANK.Data
                 .WithMany(a => a.Cards)
                 .HasForeignKey(c => c.AccountId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<IdentityRole>()
+                .HasData(
+                    new IdentityRole
+                    {
+                        Id = "1",
+                        Name = "Admin",
+                        NormalizedName = "ADMIN"
+                    },
+                    new IdentityRole
+                    {
+                        Id = "2",
+                        Name = "User",
+                        NormalizedName = "USER"
+                    }
+                );
+
 
             base.OnModelCreating(modelBuilder);
         }
