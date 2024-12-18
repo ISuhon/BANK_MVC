@@ -18,6 +18,8 @@ namespace BANK.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Transaction>()
                 .HasOne(t => t.Card)
                 .WithMany(c => c.Transactions)
@@ -45,9 +47,6 @@ namespace BANK.Data
                         NormalizedName = "USER"
                     }
                 );
-
-
-            base.OnModelCreating(modelBuilder);
         }
     }
 }
