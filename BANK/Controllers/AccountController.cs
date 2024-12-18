@@ -3,6 +3,7 @@ using BANK.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BANK.Controllers
 {
@@ -16,17 +17,19 @@ namespace BANK.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(Currency currency)
         {
             if (ModelState.IsValid)
             {
-                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var userId = GetUserId();
                 var account = new Account
                 {
                     ClientId = userId,
@@ -41,6 +44,7 @@ namespace BANK.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Details(int id, int page = 1, int pageSize = 10, string search = "", string sortBy = "ExpirationDate", bool sortDescending = false)
         {
             var account = await _context.Accounts
@@ -86,15 +90,37 @@ namespace BANK.Controllers
             return View(account);
         }
 
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var account = await _context.Accounts.FindAsync(id);
-            int clientId = account.ClientId;
+            string clientId = account.ClientId;
             if (account == null) return NotFound();
 
             _context.Accounts.Remove(account);
             await _context.SaveChangesAsync();
             return RedirectToAction("Details", "Client", new {id = clientId});
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Index()
+        {
+            var id = GetUserId();
+
+            var client = await _context.Users
+                .Include(c => c.Accounts)
+                .ThenInclude(a => a.Cards)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (client == null) return NotFound();
+
+            return View(client);
+        }
+
+        private string GetUserId()
+        {
+            return User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
     }
 }

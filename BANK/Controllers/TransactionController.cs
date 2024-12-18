@@ -1,5 +1,6 @@
 ﻿using BANK.Data;
 using BANK.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BANK.Controllers
@@ -14,6 +15,7 @@ namespace BANK.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Create(int cardId)
         {
             ViewBag.CardId = cardId;
@@ -22,6 +24,7 @@ namespace BANK.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(Transaction transaction)
         {
             if (ModelState.IsValid)

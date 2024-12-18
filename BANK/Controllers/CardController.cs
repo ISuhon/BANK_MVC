@@ -2,6 +2,7 @@
 using BANK.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BANK.Controllers
 {
@@ -15,6 +16,7 @@ namespace BANK.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Create(int accountId)
         {
             ViewBag.Account = accountId;
@@ -22,6 +24,7 @@ namespace BANK.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(Card card)
         {
             if (ModelState.IsValid)
@@ -34,6 +37,7 @@ namespace BANK.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Details(int id)
         {
             var card = await _context.Cards
@@ -46,6 +50,7 @@ namespace BANK.Controllers
             return View(card);
         }
 
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var card = await _context.Cards.FindAsync(id);
