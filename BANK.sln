@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34004.107
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BANK", "BANK\BANK.csproj", "{6CF13610-4C84-48F6-A093-8271B306BBF5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankAPI", "BankAPI\BankAPI.csproj", "{3AAA5051-01FA-4676-83BD-7BFD5CD475DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{6CF13610-4C84-48F6-A093-8271B306BBF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CF13610-4C84-48F6-A093-8271B306BBF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CF13610-4C84-48F6-A093-8271B306BBF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AAA5051-01FA-4676-83BD-7BFD5CD475DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AAA5051-01FA-4676-83BD-7BFD5CD475DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AAA5051-01FA-4676-83BD-7BFD5CD475DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AAA5051-01FA-4676-83BD-7BFD5CD475DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
