@@ -24,7 +24,7 @@ namespace BankAPI.Controllers
 
         // GET: api/Accounts
         [HttpGet]
-        [Authorize]
+     // [Authorize]
         public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
         {
             return await _context.Accounts.ToListAsync();
